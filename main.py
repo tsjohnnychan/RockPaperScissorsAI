@@ -1,7 +1,7 @@
 from game_engine import Game_Engine
 from game_ai import Game_AI
-from keras.layers import LSTM,Dense,Input
-from keras.models import Model
+from tensorflow.keras.layers import LSTM,Dense,Input
+from tensorflow.keras.models import Model
 import numpy as np
 
 def create_training_set(seq, lookback):

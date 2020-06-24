@@ -1,3 +1,4 @@
 *.pyc
 *.json
 _pycache__/
+saved_model/

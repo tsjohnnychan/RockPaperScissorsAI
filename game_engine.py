@@ -10,6 +10,7 @@ class Game_Engine():
         self.player_plays = []
 
     def set_scores(self,who_won):
+        ''' record scores of players '''
         if who_won == 'computer':
             self.computer_score += 1
         elif who_won == 'player':
@@ -18,7 +19,7 @@ class Game_Engine():
             raise Exception('Unknow player name')
 
     def play_a_hand(self, player):
-
+        ''' play one hand of the game '''
         #assign a random play to the computer
         computer = self.moves[randint(0,2)]
         self.computer_plays.append(computer)
@@ -54,6 +55,7 @@ class Game_Engine():
             return None      
 
     def play_to_win(self):
+        '''play until one wins the game'''
         while True:
             player = input('Rock, Paper, Scissors? ')
             result = self.play_a_hand(player)
@@ -87,6 +89,7 @@ class Game_Engine():
             )
 
     def auto_play(self,tot_hand):
+        ''' Play tot_hand and record scores '''
         # computer plays against computer
         hand = 1
         while hand <= tot_hand:
