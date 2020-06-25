@@ -11,8 +11,6 @@ def main():
     )
 
     if app_mode == "Start Game":
-        # # init game environment
-        # envi = init_game_env()
 
         # set title 
         title_ui('Rock Paper Scissors with AI')
