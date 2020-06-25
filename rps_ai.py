@@ -121,7 +121,7 @@ class RockPaperScissorsAI():
             logging.info('Random play')
             return self.take_random_move()
         else:
-            logging.info('Smart play')
+            logging.info('Aanlyzed play')
             predicted_move = self.predict_move()
             counter_move = self.take_counter_move(predicted_move)
             return counter_move
