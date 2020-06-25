@@ -54,22 +54,22 @@ class RockPaperScissors():
     def render(self, ai_learns=False):
         while True:
             # ask for inputs
-            ai_move = input('ai move = ')
+            ai_move = self.ai_player.play()
             human_move = input('human move = ')
             self.ai_moves.append(ai_move)
             self.human_moves.append(human_move)
             # judge rules
             result = self.judge(ai_move, human_move)
             if result == 'TIE':
-                print ('AI ties with Human')
+                print ('{} vs {}, ties'.format(ai_move,human_move))
             elif result == 'WIN':
-                print ('AI won')
+                print ('{} vs {}, AI won'.format(ai_move, human_move))
             elif result == 'LOSE':
-                print ('Human won')
+                print ('{} vs {}, Human won'.format(ai_move, human_move))
             # ai learns
             if ai_learns:
-                pass
-
+                self.ai_player.learn([human_move])
+            # ask to continue game
             if input('Continue? (yes/no)') == 'no':
                 break
         ai_score, human_score = self.calc_scores()

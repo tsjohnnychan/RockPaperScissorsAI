@@ -3,6 +3,7 @@ from tensorflow.keras.models import Model,save_model,load_model
 import numpy as np
 import pickle
 from random import randint
+import logging 
 
 class RockPaperScissorsAI():
 
@@ -19,10 +20,10 @@ class RockPaperScissorsAI():
                 self.model.load_weights('saved_model/weights')
                 self.memory = self._load_memory()
             except:
-                self.model = None
+                self.model = self._create_model()
                 self.memory = []
-        else:
-            self.model = None
+        elif reset == True:
+            self.model = self._create_model()
             self.memory = []
 
     def _trim_memory(self, depth=10):
@@ -58,7 +59,7 @@ class RockPaperScissorsAI():
 
 
     def _fit(self, trainX, trainY, epochs):
-        self.model.fit(trainX, trainY, epochs=epochs)
+        self.model.fit(trainX, trainY, epochs=epochs, verbose=0)
 
     def _predict(self,X):
         return self.model.predict(X)
@@ -114,18 +115,27 @@ class RockPaperScissorsAI():
         return moves[randint(0,2)]
 
     def play(self):
-        predicted_move = self.predict_move()
-        counter_move = self.take_counter_move(predicted_move)
-        return counter_move
+        if len(self.memory) <= self.lookback:
+            logging.info('Random play')
+            return self.take_random_move()
+        else:
+            logging.info('Smart play')
+            predicted_move = self.predict_move()
+            counter_move = self.take_counter_move(predicted_move)
+            return counter_move
     
     def learn(self,new_moves):
+        logging.info('Learning...')
         self._memorize(new_moves)
-        self._trim_memory()
-        seq = self._map_moves2nums(self.memory)
-        trainX, trainY = self.create_training_set(seq)
-        self._fit(trainX, trainY, 50)
-        self.model.save_weights('saved_model/weights')
-        self._save_memory()
+        if len(self.memory) <= self.lookback:
+            pass
+        else:
+            self._trim_memory()
+            seq = self._map_moves2nums(self.memory)
+            trainX, trainY = self.create_training_set(seq)
+            self._fit(trainX, trainY, 50)
+            self.model.save_weights('saved_model/weights')
+            self._save_memory()
         
 if __name__ == "__main__":
     
@@ -141,9 +151,7 @@ if __name__ == "__main__":
         rock.model.save_weights('saved_model/weights')
         rock._save_memory()    
     
-    k = RockPaperScissorsAI()
-    counter_move = k.play()
-    k.learn(['r','r'])
-    
+    k = RockPaperScissorsAI(reset=False)
+
     
     
