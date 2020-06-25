@@ -1,5 +1,6 @@
 from tensorflow.keras.layers import LSTM,Dense,Input
 from tensorflow.keras.models import Model,save_model,load_model
+from tensorflow.keras.callbacks import EarlyStopping
 import numpy as np
 import pickle
 from random import randint
@@ -59,7 +60,8 @@ class RockPaperScissorsAI():
 
 
     def _fit(self, trainX, trainY, epochs):
-        self.model.fit(trainX, trainY, epochs=epochs, verbose=0)
+        callback = EarlyStopping(monitor='loss', min_delta=0.001, patience=3)
+        self.model.fit(trainX, trainY, epochs=epochs, callbacks=[callback], verbose=1)
 
     def _predict(self,X):
         return self.model.predict(X)
@@ -133,7 +135,7 @@ class RockPaperScissorsAI():
             self._trim_memory()
             seq = self._map_moves2nums(self.memory)
             trainX, trainY = self.create_training_set(seq)
-            self._fit(trainX, trainY, 50)
+            self._fit(trainX, trainY, 300)
             self.model.save_weights('saved_model/weights')
             self._save_memory()
         

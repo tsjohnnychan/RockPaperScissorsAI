@@ -73,17 +73,8 @@ def play(envi,human_move):
     ai_move = envi.ai_player.play()
     envi.ai_moves.append(ai_move)
     envi.human_moves.append(human_move)
-    result = envi.judge(ai_move, human_move)
-    # if result == 'TIE':
-    #     st.write ('{} vs {}, ties'.format(human_move, ai_move))
-    # elif result == 'WIN':
-    #     st.write ('{} vs {}, AI won'.format(human_move, ai_move))
-    # elif result == 'LOSE':
-    #     st.write ('{} vs {}, Human won'.format(human_move, ai_move))
     result_ui(human_move,ai_move)
     envi.ai_player.learn([human_move])
-    logging.info('human_moves: '.format(envi.human_moves))
-    logging.info('ai_moves: '.format(envi.ai_moves))
 
 
 
